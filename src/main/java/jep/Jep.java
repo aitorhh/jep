@@ -70,6 +70,10 @@ public class Jep implements AutoCloseable {
 
     private boolean interactive = false;
 
+    // stored to be able to postpone the init
+    private JepConfig config = null;
+    private boolean useSubInterpreter = false;
+
     private final MemoryManager memoryManager = new MemoryManager();
 
     // windows requires this as unix newline...
@@ -225,10 +229,13 @@ public class Jep implements AutoCloseable {
     }
 
     public Jep(JepConfig config) throws JepException {
-        this(config, true);
+        this(config, false, true);
+    }
+    public Jep(JepConfig config, boolean postponeInit) throws JepException {
+        this(config, postponeInit, true);
     }
 
-    protected Jep(JepConfig config, boolean useSubInterpreter) throws JepException {
+    protected Jep(JepConfig config, boolean postponeInit, boolean useSubInterpreter) throws JepException {
         MainInterpreter mainInterpreter = MainInterpreter.getMainInterpreter();
         if (threadUsed.get()) {
             Thread current = Thread.currentThread();
@@ -244,17 +251,29 @@ public class Jep implements AutoCloseable {
         } else {
             this.classLoader = config.classLoader;
         }
-
-        boolean hasSharedModules = config.sharedModules != null
-                && !config.sharedModules.isEmpty();
+        this.config = config;
+        this.useSubInterpreter = useSubInterpreter;
 
         this.interactive = config.interactive;
+        if (!postponeInit) {
+            System.out.println("executing initialization of Jep");
+            init();
+        }
+    }
+
+    public boolean isInitialized(){ return threadUsed.get(); }
+
+    public void init() throws JepException {
+        boolean hasSharedModules = this.config.sharedModules != null
+                && !this.config.sharedModules.isEmpty();
+
         this.tstate = init(this.classLoader, hasSharedModules,
-                useSubInterpreter);
+                this.useSubInterpreter);
         threadUsed.set(true);
         this.thread = Thread.currentThread();
-        configureInterpreter(config);
+        configureInterpreter(this.config);
     }
+
 
     protected void configureInterpreter(JepConfig config) throws JepException {
         // why write C code if you don't have to? :-)
