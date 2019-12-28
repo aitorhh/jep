@@ -6,19 +6,19 @@
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any
  * damages arising from the use of this software.
- * 
+ *
  * Permission is granted to anyone to use this software for any
  * purpose, including commercial applications, and to alter it and
  * redistribute it freely, subject to the following restrictions:
- * 
+ *
  *     1. The origin of this software must not be misrepresented; you
  *     must not claim that you wrote the original software. If you use
  *     this software in a product, an acknowledgment in the product
  *     documentation would be appreciated but is not required.
- * 
+ *
  *     2. Altered source versions must be plainly marked as such, and
  *     must not be misrepresented as being the original software.
- * 
+ *
  *     3. This notice may not be removed or altered from any source
  *     distribution.
  */
@@ -40,7 +40,7 @@ import jep.python.PyObject;
  * used to execute Python code. Python variables can be accessed using
  * {@link #getValue(String)}.
  * </p>
- * 
+ *
  * <p>
  * In general, methods called on a Jep instance must be called from the same
  * thread that created the instance. To maintain stability, avoid having two Jep
@@ -49,7 +49,7 @@ import jep.python.PyObject;
  * thread. Jep instances should always be closed when no longer needed to
  * prevent memory leaks.
  * </p>
- * 
+ *
  */
 public class Jep implements AutoCloseable {
 
@@ -95,10 +95,10 @@ public class Jep implements AutoCloseable {
     /**
      * Sets interpreter settings for the top Python interpreter. This method
      * must be called before the first Jep instance is created in the process.
-     * 
+     *
      * @param config
      *            the python configuration to use.
-     * 
+     *
      * @throws JepException
      *             if an error occurs
      * @deprecated Please use {@link MainInterpreter#setInitParams(PyConfig)}
@@ -113,7 +113,7 @@ public class Jep implements AutoCloseable {
     /**
      * Sets the sys.argv values on the top interpreter. This is a workaround for
      * issues with shared modules and should be considered experimental.
-     * 
+     *
      * @param argv
      *            the arguments to be set on Python's sys.argv for the top/main
      *            interpreter
@@ -122,7 +122,7 @@ public class Jep implements AutoCloseable {
      * @deprecated Please use
      *             {@link MainInterpreter#setSharedModulesArgv(String...)}
      *             instead.
-     * 
+     *
      * @since 3.7
      */
     @Deprecated
@@ -136,7 +136,7 @@ public class Jep implements AutoCloseable {
     /**
      * Creates a new <code>Jep</code> instance and its associated
      * sub-interpreter.
-     * 
+     *
      * @exception JepException
      *                if an error occurs
      */
@@ -147,7 +147,7 @@ public class Jep implements AutoCloseable {
     /**
      * Creates a new <code>Jep</code> instance and its associated
      * sub-interpreter.
-     * 
+     *
      * @param interactive
      *            whether {@link #eval(String)} should support the slower
      *            behavior of potentially waiting for multiple statements
@@ -163,7 +163,7 @@ public class Jep implements AutoCloseable {
     /**
      * Creates a new <code>Jep</code> instance and its associated
      * sub-interpreter.
-     * 
+     *
      * @param interactive
      *            whether {@link #eval(String)} should support the slower
      *            behavior of potentially waiting for multiple statements
@@ -182,7 +182,7 @@ public class Jep implements AutoCloseable {
     /**
      * Creates a new <code>Jep</code> instance and its associated
      * sub-interpreter.
-     * 
+     *
      * @param interactive
      *            whether {@link #eval(String)} should support the slower
      *            behavior of potentially waiting for multiple statements
@@ -204,7 +204,7 @@ public class Jep implements AutoCloseable {
     /**
      * Creates a new <code>Jep</code> instance and its associated
      * sub-interpreter.
-     * 
+     *
      * @param interactive
      *            whether {@link #eval(String)} should support the slower
      *            behavior of potentially waiting for multiple statements
@@ -256,7 +256,6 @@ public class Jep implements AutoCloseable {
 
         this.interactive = config.interactive;
         if (!postponeInit) {
-            System.out.println("executing initialization of Jep");
             init();
         }
     }
@@ -327,9 +326,9 @@ public class Jep implements AutoCloseable {
     /**
      * Checks if the current thread is valid for the method call. All calls must
      * check the thread.
-     * 
+     *
      * <b>Internal Only</b>
-     * 
+     *
      * @exception JepException
      *                if an error occurs
      */
@@ -344,7 +343,7 @@ public class Jep implements AutoCloseable {
 
     /**
      * Runs a Python script.
-     * 
+     *
      * @param script
      *            a <code>String</code> absolute path to script file.
      * @exception JepException
@@ -356,7 +355,7 @@ public class Jep implements AutoCloseable {
 
     /**
      * Runs a Python script.
-     * 
+     *
      * @param script
      *            a <code>String</code> absolute path to script file.
      * @param cl
@@ -382,7 +381,7 @@ public class Jep implements AutoCloseable {
 
     /**
      * Invokes a Python function.
-     * 
+     *
      * @param name
      *            a Python function name in globals dict or the name of a global
      *            object and method using dot notation.
@@ -403,7 +402,7 @@ public class Jep implements AutoCloseable {
 
     /**
      * Invokes a Python function.
-     * 
+     *
      * @param name
      *            a Python function name in globals dict or the name of a global
      *            object and method using dot notation.
@@ -426,7 +425,7 @@ public class Jep implements AutoCloseable {
 
     /**
      * Invokes a Python function.
-     * 
+     *
      * @param name
      *            must be a valid Python function name in globals dict
      * @param args
@@ -455,29 +454,29 @@ public class Jep implements AutoCloseable {
      * <p>
      * Evaluate Python statements.
      * </p>
-     * 
+     *
      * <p>
      * In interactive mode, Jep may not immediately execute the given lines of
      * code. In that case, eval() returns false and the statement is stored and
      * is appended to the next incoming string.
      * </p>
-     * 
+     *
      * <p>
      * If you're running an unknown number of statements, finish with
      * <code>eval(null)</code> to flush the statement buffer.
      * </p>
-     * 
+     *
      * <p>
      * Interactive mode is slower than a straight eval call since it has to
      * compile the code strings to detect the end of the block. Non-interactive
      * mode is faster, but code blocks must be complete. For example:
      * </p>
-     * 
+     *
      * <pre>
      * interactive mode == false
      * <code>jep.eval("if(Test):\n    print('Hello world')");</code>
      * </pre>
-     * 
+     *
      * <pre>
      * interactive mode == true
      * <code>jep.eval("if(Test):");
@@ -485,12 +484,12 @@ public class Jep implements AutoCloseable {
      * jep.eval(null);
      * </code>
      * </pre>
-     * 
+     *
      * <p>
      * Also, Python does not readily return object values from eval(). Use
      * {@link #getValue(String)} instead.
      * </p>
-     * 
+     *
      * @param str
      *            a <code>String</code> statement to eval
      * @return true if statement complete and was executed.
@@ -548,7 +547,7 @@ public class Jep implements AutoCloseable {
     private native void eval(long tstate, String str) throws JepException;
 
     /**
-     * 
+     *
      * <p>
      * Retrieves a value from this Python sub-interpreter. Supports retrieving:
      * <ul>
@@ -561,7 +560,7 @@ public class Jep implements AutoCloseable {
      * <li>Python tuples</li>
      * <li>Python dictionaries</li>
      * </ul>
-     * 
+     *
      * <p>
      * For Python containers, such as lists and dictionaries, getValue will
      * recursively move through the container and convert each item. If the type
@@ -569,7 +568,7 @@ public class Jep implements AutoCloseable {
      * a String representation of the object. This fallback behavior will
      * probably change in the future and should not be relied upon.
      * </p>
-     * 
+     *
      * @param str
      *            the name of the Python variable to get from the interpreter's
      *            global scope
@@ -670,7 +669,7 @@ public class Jep implements AutoCloseable {
 
     /**
      * Retrieves a Python string object as a Java byte[].
-     * 
+     *
      * @param str
      *            the name of the Python variable to get from the
      *            sub-interpreter's global scope
@@ -690,7 +689,7 @@ public class Jep implements AutoCloseable {
     /**
      * Create a Python module on the interpreter. If the given name is valid,
      * imported module, this method will return that module.
-     * 
+     *
      * @deprecated This will be removed in a future release.
      * @param name
      *            a <code>String</code> value
@@ -710,7 +709,7 @@ public class Jep implements AutoCloseable {
 
     /**
      * Sets the default classloader.
-     * 
+     *
      * @param cl
      *            a <code>ClassLoader</code> value
      */
@@ -728,7 +727,7 @@ public class Jep implements AutoCloseable {
      * Changes behavior of {@link #eval(String)}. Interactive mode can wait for
      * further Python statements to be evaled, while non-interactive mode can
      * only execute complete Python statements.
-     * 
+     *
      * @param v
      *            if the sub-interpreter should run in interactive mode
      */
@@ -738,7 +737,7 @@ public class Jep implements AutoCloseable {
 
     /**
      * Gets whether or not this sub-interpreter is interactive.
-     * 
+     *
      * @return whether or not the sub-interpreter is interactive
      */
     public boolean isInteractive() {
@@ -748,7 +747,7 @@ public class Jep implements AutoCloseable {
     /**
      * Sets the Java Object into the sub-interpreter's global scope with the
      * specified variable name.
-     * 
+     *
      * @param name
      *            the Python name for the variable
      * @param v
@@ -791,7 +790,7 @@ public class Jep implements AutoCloseable {
     /**
      * Sets the Java String into the sub-interpreter's global scope with the
      * specified variable name.
-     * 
+     *
      * @param name
      *            the Python name for the variable
      * @param v
@@ -811,7 +810,7 @@ public class Jep implements AutoCloseable {
     /**
      * Sets the Java boolean into the sub-interpreter's global scope with the
      * specified variable name.
-     * 
+     *
      * @param name
      *            the Python name for the variable
      * @param v
@@ -831,7 +830,7 @@ public class Jep implements AutoCloseable {
     /**
      * Sets the Java int into the sub-interpreter's global scope with the
      * specified variable name.
-     * 
+     *
      * @param name
      *            the Python name for the variable
      * @param v
@@ -848,7 +847,7 @@ public class Jep implements AutoCloseable {
     /**
      * Sets the Java short into the sub-interpreter's global scope with the
      * specified variable name.
-     * 
+     *
      * @param name
      *            the Python name for the variable
      * @param v
@@ -868,7 +867,7 @@ public class Jep implements AutoCloseable {
     /**
      * Sets the Java char[] into the sub-interpreter's global scope with the
      * specified variable name.
-     * 
+     *
      * @param name
      *            the Python name for the variable
      * @param v
@@ -885,7 +884,7 @@ public class Jep implements AutoCloseable {
     /**
      * Sets the Java char into the sub-interpreter's global scope with the
      * specified variable name.
-     * 
+     *
      * @param name
      *            the Python name for the variable
      * @param v
@@ -902,7 +901,7 @@ public class Jep implements AutoCloseable {
     /**
      * Sets the Java byte into the sub-interpreter's global scope with the
      * specified variable name.
-     * 
+     *
      * @param name
      *            the Python name for the variable
      * @param b
@@ -919,7 +918,7 @@ public class Jep implements AutoCloseable {
     /**
      * Sets the Java long into the sub-interpreter's global scope with the
      * specified variable name.
-     * 
+     *
      * @param name
      *            the Python name for the variable
      * @param v
@@ -939,7 +938,7 @@ public class Jep implements AutoCloseable {
     /**
      * Sets the Java double into the sub-interpreter's global scope with the
      * specified variable name.
-     * 
+     *
      * @param name
      *            the Python name for the variable
      * @param v
@@ -959,7 +958,7 @@ public class Jep implements AutoCloseable {
     /**
      * Sets the Java float into the sub-interpreter's global scope with the
      * specified variable name.
-     * 
+     *
      * @param name
      *            the Python name for the variable
      * @param v
@@ -981,7 +980,7 @@ public class Jep implements AutoCloseable {
     /**
      * Sets the Java boolean[] into the sub-interpreter's global scope with the
      * specified variable name.
-     * 
+     *
      * @param name
      *            the Python name for the variable
      * @param v
@@ -1001,7 +1000,7 @@ public class Jep implements AutoCloseable {
     /**
      * Sets the Java int[] into the sub-interpreter's global scope with the
      * specified variable name.
-     * 
+     *
      * @param name
      *            the Python name for the variable
      * @param v
@@ -1021,7 +1020,7 @@ public class Jep implements AutoCloseable {
     /**
      * Sets the Java short[] into the sub-interpreter's global scope with the
      * specified variable name.
-     * 
+     *
      * @param name
      *            the Python name for the variable
      * @param v
@@ -1041,7 +1040,7 @@ public class Jep implements AutoCloseable {
     /**
      * Sets the Java byte[] into the sub-interpreter's global scope with the
      * specified variable name.
-     * 
+     *
      * @param name
      *            the Python name for the variable
      * @param v
@@ -1061,7 +1060,7 @@ public class Jep implements AutoCloseable {
     /**
      * Sets the Java long[] into the sub-interpreter's global scope with the
      * specified variable name.
-     * 
+     *
      * @param name
      *            the Python name for the variable
      * @param v
@@ -1081,7 +1080,7 @@ public class Jep implements AutoCloseable {
     /**
      * Sets the Java double[] into the sub-interpreter's global scope with the
      * specified variable name.
-     * 
+     *
      * @param name
      *            the Python name for the variable
      * @param v
@@ -1101,7 +1100,7 @@ public class Jep implements AutoCloseable {
     /**
      * Sets the Java float[] into the sub-interpreter's global scope with the
      * specified variable name.
-     * 
+     *
      * @param name
      *            the Python name for the variable
      * @param v
@@ -1124,7 +1123,7 @@ public class Jep implements AutoCloseable {
      * Gets the memory manager associated with this Jep instance. The memory
      * manager attempts to track native memory usage of PyObjects. This should
      * not be called outside of Jep and should be considered an internal method.
-     * 
+     *
      * @return the memory manager
      */
     public MemoryManager getMemoryManager() {
@@ -1134,7 +1133,7 @@ public class Jep implements AutoCloseable {
     /**
      * Shuts down the Python sub-interpreter. Make sure you call this to prevent
      * memory leaks.
-     * 
+     *
      */
     @Override
     public synchronized void close() throws JepException {
